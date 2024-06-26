@@ -1,0 +1,49 @@
+body {
+  background-color: rgb(80, 80, 80);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 40px auto;
+}
+
+.calc-body {
+  background-color: rgb(28, 32, 34);
+  width: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 30px;
+}
+
+#display {
+  background-color: rgb(186, 187, 176);
+  flex: 100%;
+  /* width: 640px; */
+  height: 100px;
+  text-align: end;
+  font-size: 84px;
+  color: rgb(63, 63, 63);
+}
+
+button {
+  background-color: rgb(49, 145, 145);
+  color: azure;
+  font-weight: 700;
+  font-size: 30px;
+  width: 120px;
+  height: 120px;
+}
+
+.operator {
+  background-color: rgb(41, 109, 173);
+}
+
+.operand {
+  background-color: rgb(148, 123, 41);
+}
+
+#zero {
+  flex-grow: 2;
+}
