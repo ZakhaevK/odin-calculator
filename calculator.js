@@ -4,20 +4,43 @@ const clearBut = document.getElementById("ac");
 const signBut = document.getElementById("+/-");
 const percentBut = document.getElementById("percentage");
 const operandButs = document.getElementsByClassName("operand");
+const operatorButs = document.getElementsByClassName("operator");
 
+
+// Button initialisation
 for (let button of operandButs) {
   console.log(button.value);
-  button.addEventListener("click", () => updateDisplay(button.value));
+  button.addEventListener("click", () => updateOperand(button.value));
+}
+
+for (let button of operatorButs) {
+  console.log(button.value);
+  button.addEventListener("click", () => {
+    if(opClicked) {
+      display.textContent = operate(op, num1, display.textContent);
+      num1 = display.textContent;
+    } else {
+      opClicked = true
+    }
+    op = button.value;
+  });
 }
 
 // Variables for calculator operations
 let num1 = 0;
 let op = '';
 let num2 = 0;
+let opClicked = false;
 
 
 // Update display, handles decimal point
-function updateDisplay(string) {
+function updateOperand(string) {
+  if (opClicked) {
+    display.textContent = string;
+    opClicked = false;
+    return
+  }
+
   console.log(string)
   if (string == ".") {
     if (!display.textContent.includes(".")) 
@@ -34,21 +57,13 @@ function updateDisplay(string) {
 
 
 // Basic calculator operations
-function add(a, b) {
-  return a + b;
-}
+function add(a, b) {return a + b;}
 
-function subtract(a, b) {
-  return a - b;
-}
+function subtract(a, b) {return a - b;}
 
-function multiply(a, b) {
-  return a * b;
-}
+function multiply(a, b) {return a * b;}
 
-function divide(a, b) {
-  return a / b;
-}
+function divide(a, b) {return a / b;}
 
 
 // Calls the calculator function
