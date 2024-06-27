@@ -5,39 +5,54 @@ const signBut = document.getElementById("+/-");
 const percentBut = document.getElementById("percentage");
 const operandButs = document.getElementsByClassName("operand");
 const operatorButs = document.getElementsByClassName("operator");
+const equalsBut = document.getElementById("equals");
+
+// Variables for calculator operations
+let num1 = 0;
+let op = '';
+let clearOnClick = false;
 
 
 // Button initialisation
+clearBut.addEventListener('click', () => {
+  num1 = 0;
+  op = '';
+  clearOnClick = false;
+  display.textContent = 0;
+})
+
 for (let button of operandButs) {
   console.log(button.value);
   button.addEventListener("click", () => updateOperand(button.value));
 }
 
 for (let button of operatorButs) {
-  console.log(button.value);
   button.addEventListener("click", () => {
-    if(opClicked) {
-      display.textContent = operate(op, num1, display.textContent);
-      num1 = display.textContent;
-    } else {
-      opClicked = true
+    num1 = parseFloat(display.textContent);
+    if (op !== "") {
+      display.textContent = operate(op, num1, parseFloat(display.textContent));
+      num1 = parseFloat(display.textContent);
     }
     op = button.value;
+    clearOnClick = true
   });
 }
 
-// Variables for calculator operations
-let num1 = 0;
-let op = '';
-let num2 = 0;
-let opClicked = false;
+equalsBut.addEventListener('click', () => {
+  if (op != '') {
+    num1 = operate(op, num1, parseFloat(display.textContent));
+    display.textContent = num1;
+    op = '';
+    clearOnClick = false;
+  } 
+})
 
 
 // Update display, handles decimal point
 function updateOperand(string) {
-  if (opClicked) {
+  if (clearOnClick) {
     display.textContent = string;
-    opClicked = false;
+    clearOnClick = false;
     return
   }
 
@@ -68,6 +83,8 @@ function divide(a, b) {return a / b;}
 
 // Calls the calculator function
 function operate(op, num1, num2) {
+  console.log(typeof num1);
+  console.log(typeof num2);
   switch(op) {
     case '+': return add(num1, num2);
     case '-': return subtract(num1, num2);
