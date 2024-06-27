@@ -9,17 +9,19 @@ const equalsBut = document.getElementById("equals");
 
 // Variables for calculator operations
 let num1 = 0;
+let num2 = 0;
 let op = '';
 let clearOnClick = false;
 
 
 // Button initialisation
-clearBut.addEventListener('click', () => {
-  num1 = 0;
-  op = '';
-  clearOnClick = false;
-  display.textContent = 0;
-})
+clearBut.addEventListener('click', () => clearAll())
+
+sign.addEventListener('click', () => {
+  display.textContent = `-${display.textContent}`})
+
+percentBut.addEventListener('click', () => {
+  display.textContent = display.textContent / 100})
 
 for (let button of operandButs) {
   console.log(button.value);
@@ -28,9 +30,12 @@ for (let button of operandButs) {
 
 for (let button of operatorButs) {
   button.addEventListener("click", () => {
-    num1 = parseFloat(display.textContent);
     if (op !== "") {
-      display.textContent = operate(op, num1, parseFloat(display.textContent));
+      num2 = parseFloat(display.textContent);
+      num1 = operate(op, num1, num2);
+      display.textContent = num1;
+      num2 = 0;
+    } else {
       num1 = parseFloat(display.textContent);
     }
     op = button.value;
@@ -40,12 +45,21 @@ for (let button of operatorButs) {
 
 equalsBut.addEventListener('click', () => {
   if (op != '') {
-    num1 = operate(op, num1, parseFloat(display.textContent));
-    display.textContent = num1;
+    num2 = parseFloat(display.textContent)
+    display.textContent = operate(op, num1, num2)
+    num1 = parseFloat(display.textContent);
     op = '';
     clearOnClick = false;
   } 
 })
+
+// Limits the display text content to stop display breaking
+// const observer = new MutationObserver(() => {
+//   if (display.textContent.length > 9) {
+//     display.textContent = display.textContent.substring(0, 10);
+//   }
+// });
+// observer.observe(display, { childList: true, characterData: true, subtree: true });
 
 
 // Update display, handles decimal point
@@ -70,25 +84,36 @@ function updateOperand(string) {
   }
 }
 
+function clearAll() {
+  num1 = 0;
+  num2 = 0;
+  op = '';
+  clearOnClick = false;
+  display.textContent = 0;
+}
+
 
 // Basic calculator operations
 function add(a, b) {return a + b;}
-
 function subtract(a, b) {return a - b;}
-
 function multiply(a, b) {return a * b;}
-
-function divide(a, b) {return a / b;}
+function divide(a, b) {
+  if (a == 0 && b == 0) return "XD";
+  return a / b;
+}
 
 
 // Calls the calculator function
 function operate(op, num1, num2) {
-  console.log(typeof num1);
-  console.log(typeof num2);
+  let result;
   switch(op) {
-    case '+': return add(num1, num2);
-    case '-': return subtract(num1, num2);
-    case '*': return multiply(num1, num2);
-    case '/': return divide(num1, num2);
+    case '+': result = add(num1, num2); break;
+    case '-': result = subtract(num1, num2); break;
+    case '*': result = multiply(num1, num2); break;
+    case '/': result = divide(num1, num2); break;
   }
+  if (typeof result === 'number') {
+    result = result.toString().substring(0, 10);
+  }
+  return result;
 }
