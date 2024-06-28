@@ -6,6 +6,7 @@ const percentBut = document.getElementById("percentage");
 const operandButs = document.getElementsByClassName("operand");
 const operatorButs = document.getElementsByClassName("operator");
 const equalsBut = document.getElementById("equals");
+const backspaceBut = document.getElementById("backspace");
 
 // Variables for calculator operations
 let num1 = 0;
@@ -51,6 +52,10 @@ equalsBut.addEventListener('click', () => {
     op = '';
     clearOnClick = false;
   } 
+})
+
+backspaceBut.addEventListener('click', () => {
+  display.textContent = display.textContent.slice(0, display.textContent.length - 1)
 })
 
 // Limits the display text content to stop display breaking
